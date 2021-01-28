@@ -46,6 +46,7 @@ Methods with applications:
 - Statistical fine-mapping in multiple ancestries
 - Multi-tissue alternative polyadenylation calling from brain RNA-seq data
 - Statistical benchmark for colocalization analysis
+- Multivariate models for colocalization analysis
 - Copy number variation association study for Alzheimer's disease
 - Evaluation of fine-mapping in unbalanced case-control design
 - Matrix completion and prediction of Alzheimer's disease risk using epidemiological records
