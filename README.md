@@ -62,6 +62,7 @@ Applied data analysis:
 - Linear mixed model analysis of various phenotypes in UK Biobank data
 - Improve and implement fine-mapping pipeline for UK Biobank data analysis (univariate and multivariate)
 - Multi-tissue fine-mapping for splice QTL data in GTEx project
+- Pipeline for TWAS analysis
 
 Software development:
 
