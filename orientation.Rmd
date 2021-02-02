@@ -89,9 +89,17 @@ head(sub_UKBB) # show part of the data
 ```
 
 **Q1:** How many females and males are there in this data? Please show your code below how these numbers are computed.
+
+```{r}
+count(sub_UKBB$f.22001.0.0)
+```
+There are 77535 females and 67221 males in this data.
  
 **Q2:** Can you tell what kind of trait it is for tinnitus? 
 A.Binary trait. B. Continuous trait. 
+
+Tinnitus is a Binary trait.
+
 
 **Q3:** Recode f.4803
 
@@ -133,6 +141,8 @@ for (i in new_column_names)
 
 What do you think has been achieved by recoding these fields?
 
+We are changing categorical data into numerics by using dummy-coding that is easier to compute for later models.
+
 **Q4:** Define case and control status of tinnitus for each participant in the study:
 
 ```{r}
@@ -155,6 +165,11 @@ head(df_recode,10)
 
 How many cases and how many controls do we have for this phenotpype?
 
+```{r}
+count(df_recode$cases)
+```
+There are 101550 controls and 43206 cases.
+
 **Q5:** Extract a subset of columns from all participants for association study. 
 
 ```{r}
@@ -165,7 +180,10 @@ head(df_cases,10)
 ```
 Please modify codes above to extract all the controls and keep only these columns: `FID`, `IID`, `cases`, `f.22001.0.0`, `f.21003.0.0`, `f.21003.1.0`, `f.21003.2.0`, `f.21003.3.0`. Please show the first 10 rows of the output.
 ```{r}
-# YOUR CODE
+df_control  <- df_recode %>%
+  select(IID,FID,cases,f.22001.0.0,f.21003.0.0,f.21003.1.0,f.21003.2.0,f.21003.3.0)%>% 
+  filter(cases==FALSE)
+head(df_control,10)  
 ```
 \newpage
 
@@ -173,11 +191,17 @@ Please modify codes above to extract all the controls and keep only these column
  
 **Q6:** Field 21003 contains the information of the age of participants, same as field 4803. Note that some of them have more than one age. Can you guess why?
 
+My guess is that since 4803 is coded as 4803.0.0, 4803.1.0, 4803.2.0, 4803.3.0 which is their 1st, 2nd, 3rd, 4th visit to hospital respectively, 21003 has four columns corresponding to patients' age at the time of each of their visit. 
+
 **Q7:** For those with more than one age records, which age do you think should be used in the genetic association analysis?
+
+
 
 **Q8:** Please compute a summary of age information for controls (you can use `summary()` function in R):
 ```{r}
-#YOUR CODE
+df_control %>%
+select(f.21003.0.0, f.21003.1.0, f.21003.2.0, f.21003.3.0) %>%
+summary()
 ```
 \newpage
 
@@ -199,11 +223,24 @@ auto_data <- ISLR::Auto
 fit_1<-lm(mpg ~ weight, auto_data)
 summary(fit_1)
 ```
+Yes, there is a significant negative association between mpg of the car and weight of the car (t(392)=-29.64, p=2e-16). The slope of weight of the car is -0.007649.
+The overall model is also significant with F(1,390)=878.8, p=2.2e-16.
 
 **Q10:** Please create a new variable to indicate cars having MPG greater than 23 as 1, otherwise 0, then use logistic regrssion via `glm()` function to analyze association between weight and this new variable you just created. Please comment on what you find.
+
+```{r}
+auto_log = mutate(auto_data, high_mpg = if_else(mpg>23, 1, 0))
+logmod <- glm(high_mpg ~ weight, data = auto_log, family = "binomial")
+summary(logmod)
+```
+The effect of weight on mpg of car is negative, meaning that with more weight added on the car, the lower the probability of a car will be above 23mpg.
 
 **Q11:** Find the `Estimates` from your asociation results summary. How do you interpret the estimated effects of weight in the context of linear regression, and in the context of logistic regression? (this question might be a bit challenging if you are not familiar with regression analysis; don't sweat if you cannot find the answer for it).
 
 ```{r}
-#YOUR CODE
+summary(logmod)
+exp(logmod$coefficients)
 ```
+
+In a logistic regression context, the coefficient of weight means with one unit increase in weight of the car, the log odds of the car's mpg being above 23 goes down by 0.0041.
+In a linear context, with one unit increase in weight of the car, the odds of the car having a mpg greater than 23 is 0.9959 times the odds of the car having a mpg smaller or equal to 23.
