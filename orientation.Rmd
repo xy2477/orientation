@@ -195,7 +195,8 @@ My guess is that since 4803 is coded as 4803.0.0, 4803.1.0, 4803.2.0, 4803.3.0 w
 
 **Q7:** For those with more than one age records, which age do you think should be used in the genetic association analysis?
 
-
+For those cases with more than one age records, I think the first age recorded for the 1st hospital visit that the subjects said yes to tinnitus should be used for analysis.
+For those controls with more than one age records, I think the last age recorded for the last hospital visit should be used for analysis.
 
 **Q8:** Please compute a summary of age information for controls (you can use `summary()` function in R):
 ```{r}
