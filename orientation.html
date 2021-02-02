@@ -1984,7 +1984,35 @@ div.tocify {
 <p><strong>Q10:</strong> Please create a new variable to indicate cars having MPG greater than 23 as 1, otherwise 0, then use logistic regrssion via <code>glm()</code> function to analyze association between weight and this new variable you just created. Please comment on what you find.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">auto_log =<span class="st"> </span><span class="kw">mutate</span>(auto_data, <span class="dt">high_mpg =</span> <span class="kw">if_else</span>(mpg<span class="op">&gt;</span><span class="dv">23</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">logmod &lt;-<span class="st"> </span><span class="kw">glm</span>(high_mpg <span class="op">~</span><span class="st"> </span>weight, <span class="dt">data =</span> auto_log, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">summary</span>(logmod)</a></code></pre></div>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="kw">summary</span>(logmod)</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="kw">library</span>(rms)</a></code></pre></div>
+<pre><code>## Loading required package: Hmisc</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Warning: package 'survival' was built under R version 3.6.2</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: 'Hmisc'</code></pre>
+<pre><code>## The following objects are masked from 'package:rapportools':
+## 
+##     label, label&lt;-</code></pre>
+<pre><code>## The following objects are masked from 'package:plyr':
+## 
+##     is.discrete, summarize</code></pre>
+<pre><code>## The following objects are masked from 'package:dplyr':
+## 
+##     src, summarize</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     format.pval, units</code></pre>
+<pre><code>## Loading required package: SparseM</code></pre>
+<pre><code>## 
+## Attaching package: 'SparseM'</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     backsolve</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">logmod2 &lt;-<span class="st"> </span><span class="kw">lrm</span>(high_mpg <span class="op">~</span><span class="st"> </span>weight, <span class="dt">data =</span> auto_log)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2">logmod2</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = high_mpg ~ weight, family = &quot;binomial&quot;, data = auto_log)
@@ -2006,11 +2034,28 @@ div.tocify {
 ## Residual deviance: 234.54  on 390  degrees of freedom
 ## AIC: 238.54
 ## 
-## Number of Fisher Scoring iterations: 6</code></pre>
-<p>The effect of weight on mpg of car is negative, meaning that with more weight added on the car, the lower the probability of a car will be above 23mpg.</p>
+## Number of Fisher Scoring iterations: 6
+## 
+## Logistic Regression Model
+##  
+##  lrm(formula = high_mpg ~ weight, data = auto_log)
+##  
+##                        Model Likelihood     Discrimination    Rank Discrim.    
+##                           Ratio Test           Indexes           Indexes       
+##  Obs           392    LR chi2     308.06    R2       0.726    C       0.945    
+##   0            205    d.f.             1    g        3.948    Dxy     0.890    
+##   1            187    Pr(&gt; chi2) &lt;0.0001    gr      51.845    gamma   0.890    
+##  max |deriv| 0.001                          gp       0.444    tau-a   0.445    
+##                                             Brier    0.094                     
+##  
+##            Coef    S.E.   Wald Z Pr(&gt;|Z|)
+##  Intercept 11.4448 1.1351 10.08  &lt;0.0001 
+##  weight    -0.0041 0.0004 -9.95  &lt;0.0001 
+## </code></pre>
+<p>The effect of weight on mpg of car is negative, meaning that with more weight added on the car, the lower the probability of a car will be above 23mpg. The overall goodness of fit for this logistic model is R2=0.726, which means 72.6% of the variability in car’s mpg category can be explained by car’s weight.</p>
 <p><strong>Q11:</strong> Find the <code>Estimates</code> from your asociation results summary. How do you interpret the estimated effects of weight in the context of linear regression, and in the context of logistic regression? (this question might be a bit challenging if you are not familiar with regression analysis; don’t sweat if you cannot find the answer for it).</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">summary</span>(logmod)</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="kw">exp</span>(logmod<span class="op">$</span>coefficients)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">summary</span>(logmod)</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">exp</span>(logmod<span class="op">$</span>coefficients)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = high_mpg ~ weight, family = &quot;binomial&quot;, data = auto_log)

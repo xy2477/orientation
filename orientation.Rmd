@@ -233,8 +233,12 @@ The overall model is also significant with F(1,390)=878.8, p=2.2e-16.
 auto_log = mutate(auto_data, high_mpg = if_else(mpg>23, 1, 0))
 logmod <- glm(high_mpg ~ weight, data = auto_log, family = "binomial")
 summary(logmod)
+library(rms)
+logmod2 <- lrm(high_mpg ~ weight, data = auto_log)
+logmod2
 ```
 The effect of weight on mpg of car is negative, meaning that with more weight added on the car, the lower the probability of a car will be above 23mpg.
+The overall goodness of fit for this logistic model is R2=0.726, which means 72.6% of the variability in car's mpg category can be explained by car's weight.
 
 **Q11:** Find the `Estimates` from your asociation results summary. How do you interpret the estimated effects of weight in the context of linear regression, and in the context of logistic regression? (this question might be a bit challenging if you are not familiar with regression analysis; don't sweat if you cannot find the answer for it).
 
